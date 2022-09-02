@@ -11,7 +11,8 @@ class Audio:
         self._samplerate = samplerate
         self._length = length
 
-    def to_int(self, array: np.array) -> int:
+    @staticmethod
+    def to_int(array: np.array) -> int:
         return int.from_bytes(array.tobytes(), 'big')
 
     def from_int(self, x: int) -> np.array:
@@ -33,7 +34,15 @@ class Audio:
 
         return array
 
-    def convert(self, array: np.array) -> np.array:
+    @staticmethod
+    def to_mono(array: np.array) -> np.array:
+        if len(array.shape) > 1:
+            return array[:, 0]
+
+        return array
+
+    @staticmethod
+    def convert(array: np.array) -> np.array:
         dtype = array.dtype
         if dtype == np.int16:
             return np.rint(array / 256).astype(np.uint8) + 128
@@ -45,11 +54,13 @@ class Audio:
         return array
 
     def pad(self, array: np.array, value: int = 0, left: bool = True) -> np.array:
-        padding = (self._length - len(array), 0) if left else (0, self._length - len(array))
+        difference = self._length - len(array)
+        padding = (difference, 0) if left else (0, difference)
         return np.pad(array, padding, 'constant', constant_values=value)
 
     def load(self, path: str) -> np.array:
         samplerate, array = wavfile.read(path)
+        array = self.to_mono(array)
         array = self.resample(array, samplerate)
         array = self.clamp(array)
         array = self.convert(array)
