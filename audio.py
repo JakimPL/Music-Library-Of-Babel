@@ -2,8 +2,8 @@ import numpy as np
 from scipy import signal
 from scipy.io import wavfile
 
-from auxiliary import int_to_bytes
-from constants import l
+from .auxiliary import int_to_bytes
+from .constants import l
 
 
 class Audio:
