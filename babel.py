@@ -11,6 +11,7 @@ class Babel:
         self._k = 0x50bfe0
 
         self._m = 2 << (self._w - 1)
+        self._mk = 2 << (self._k - 1)
         self._mask = (2 << (self._k - 1)) - 1
 
         self._a = a
