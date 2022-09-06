@@ -12,6 +12,7 @@ import numpy as np
 def plot(array: np.array, plot_type: str = 'plot', save: bool = False, step: int = 50):
     plt.figure(figsize=(25, 2), dpi=80, frameon=False)
     plt.axis('off')
+    plt.ylim([0.0, 1.0])
 
     y = (array / 255)[::step]
     if plot_type == 'scatter':
@@ -27,4 +28,3 @@ def plot(array: np.array, plot_type: str = 'plot', save: bool = False, step: int
     else:
         plt.show()
         plt.close()
-

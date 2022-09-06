@@ -1,6 +1,5 @@
 import base64
 from io import BytesIO
-from typing import Union
 
 import numpy as np
 from scipy import signal
@@ -24,7 +23,7 @@ class Audio:
         array = np.array([byte for byte in byte_data], dtype=np.uint8)
         return self.pad(self.clamp(array))
 
-    def save(self, array: np.array, target: Union[str, BytesIO]):
+    def save(self, array: np.array, target):
         wavfile.write(target, self._samplerate, array)
 
     def resample(self, array: np.array, samplerate: int) -> np.array:
@@ -62,7 +61,7 @@ class Audio:
         padding = (difference, 0) if left else (0, difference)
         return np.pad(array, padding, 'constant', constant_values=value)
 
-    def load(self, source: str) -> np.array:
+    def load(self, source) -> np.array:
         samplerate, array = wavfile.read(source)
         array = self.to_mono(array)
         array = self.resample(array, samplerate)
